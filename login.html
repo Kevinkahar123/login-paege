@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Firebase Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Poppins,sans-serif;
+}
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#667eea,#764ba2,#f093fb);
+}
+.login-card{
+  width:360px;
+  padding:30px;
+  border-radius:16px;
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(12px);
+  color:#fff;
+}
+.login-card h2{
+  text-align:center;
+  margin-bottom:20px;
+}
+.input-box{
+  margin-bottom:15px;
+}
+.input-box input{
+  width:100%;
+  padding:12px;
+  border-radius:8px;
+  border:none;
+  outline:none;
+}
+.error{
+  font-size:13px;
+  color:#ffda79;
+}
+.login-btn{
+  width:100%;
+  padding:12px;
+  border-radius:8px;
+  border:none;
+  background:#fad0c4;
+  font-weight:600;
+  cursor:pointer;
+}
+.success{
+  margin-top:15px;
+  text-align:center;
+  color:#c3ffb0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-card">
+  <h2>Login</h2>
+
+  <form id="loginForm">
+    <div class="input-box">
+      <input type="email" id="email" placeholder="Email" required>
+    </div>
+
+    <div class="input-box">
+      <input type="password" id="password" placeholder="Password" required>
+    </div>
+
+    <button class="login-btn" type="submit">Login</button>
+
+    <div class="success" id="successMsg"></div>
+    <div class="error" id="errorMsg"></div>
+  </form>
+</div>
+
+<!-- 🔥 Firebase + Login Logic -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } 
+    from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD6hC1HOF5bGsZLr5JEY7tjRGuer0qQX5k",
+    authDomain: "abcd-84cff.firebaseapp.com",
+    projectId: "abcd-84cff",
+    storageBucket: "abcd-84cff.firebasestorage.app",
+    messagingSenderId: "599069889394",
+    appId: "1:599069889394:web:dd6d42e65051dc9cafc3eb",
+    measurementId: "G-CECVXP7XG5"
+  };
+
+  // Initialize Firebase (ONLY ONCE)
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const loginForm = document.getElementById("loginForm");
+  const successMsg = document.getElementById("successMsg");
+  const errorMsg = document.getElementById("errorMsg");
+
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    successMsg.textContent = "";
+    errorMsg.textContent = "";
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        successMsg.textContent = "Login successful ✅";
+        console.log("User:", userCredential.user);
+      })
+      .catch((error) => {
+        errorMsg.textContent = error.message;
+      });
+  });
+</script>
+
+</body>
+</html>
